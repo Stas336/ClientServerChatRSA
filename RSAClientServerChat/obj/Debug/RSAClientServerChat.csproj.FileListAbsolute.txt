@@ -1,0 +1,6 @@
+c:\users\stas\documents\visual studio 2015\Projects\RSAClientServerChat\RSAClientServerChat\bin\Debug\RSAClientServerChat.exe.config
+c:\users\stas\documents\visual studio 2015\Projects\RSAClientServerChat\RSAClientServerChat\bin\Debug\RSAClientServerChat.exe
+c:\users\stas\documents\visual studio 2015\Projects\RSAClientServerChat\RSAClientServerChat\bin\Debug\RSAClientServerChat.pdb
+c:\users\stas\documents\visual studio 2015\Projects\RSAClientServerChat\RSAClientServerChat\obj\Debug\RSAClientServerChat.csprojResolveAssemblyReference.cache
+c:\users\stas\documents\visual studio 2015\Projects\RSAClientServerChat\RSAClientServerChat\obj\Debug\RSAClientServerChat.exe
+c:\users\stas\documents\visual studio 2015\Projects\RSAClientServerChat\RSAClientServerChat\obj\Debug\RSAClientServerChat.pdb
