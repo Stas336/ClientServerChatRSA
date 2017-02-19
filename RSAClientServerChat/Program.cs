@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 namespace RSAClientServerChat
 {
@@ -43,10 +44,12 @@ namespace RSAClientServerChat
                             break;
                         }
                     }
-                    while (true)
-                    {
-                        receiveMessage();
-                    }
+                    Console.WriteLine("Press any key to chat...");
+                    Console.ReadKey();
+                    Console.Clear();
+                    Thread receiveThread = new Thread(new ThreadStart(receiveMessage));
+                    receiveThread.Start();
+                    sendMessage();
                     break;
                 case 2:
                     TcpClient client = new TcpClient();
@@ -66,8 +69,12 @@ namespace RSAClientServerChat
                     }
                     while (client.Connected)
                     {
+                        Console.WriteLine("Press any key to chat...");
+                        Console.ReadKey();
+                        Console.Clear();
+                        receiveThread = new Thread(new ThreadStart(receiveMessage));
+                        receiveThread.Start();
                         sendMessage();
-                        //receiveMessage();
                     }
                     break;
             }
@@ -89,18 +96,18 @@ namespace RSAClientServerChat
                         message = builder.ToString();
                     }
                     while (stream.DataAvailable);
-                    if (message.Contains("--encr--"))
+                    /*if (message.Contains("--encr--"))
                     {
-                        decr = new RSACryptoServiceProvider();
-                        decr.FromXmlString(keys.ToXmlString(true)); // load our private key
-                        //enc.FromXmlString(acquiredPublicKey); // load acquired public key
-                        //byte[] decrData = enc.Decrypt(Encoding.Unicode.GetBytes(message), false);
-                        byte[] decrData = decr.Decrypt(data, true);
-                        message = Encoding.Unicode.GetString(decrData);
-                        Console.WriteLine("Received message:");
-                        Console.WriteLine(message);//вывод сообщения
-                        sendMessage();
-                    }
+                        
+                    }*/
+                    decr = new RSACryptoServiceProvider();
+                    decr.FromXmlString(keys.ToXmlString(true)); // load our private key
+                    //enc.FromXmlString(acquiredPublicKey); // load acquired public key
+                    //byte[] decrData = enc.Decrypt(Encoding.Unicode.GetBytes(message), false);
+                    byte[] decrData = decr.Decrypt(data, true);
+                    message = Encoding.Unicode.GetString(decrData);
+                    Console.Write("Received message: ");
+                    Console.WriteLine(message);//вывод сообщения
                 }
                 catch (Exception ex)
                 {
@@ -114,7 +121,7 @@ namespace RSAClientServerChat
         {
             while (true)
             {
-                Console.WriteLine("Enter message:");
+                //Console.Write("Enter message: ");
                 string message = Console.ReadLine();
                 byte[] data = new byte[384];
                 enc = new RSACryptoServiceProvider();
@@ -122,10 +129,9 @@ namespace RSAClientServerChat
                 data = enc.Encrypt(Encoding.Unicode.GetBytes(message), true);
                 //enc.FromXmlString(keys.ToXmlString(true)); // load our private key
                 //data = enc.Encrypt(data, false);
-                byte[] mark = Encoding.Unicode.GetBytes("--encr--");
-                stream.Write(mark, 0, mark.Length);
+                //byte[] mark = Encoding.Unicode.GetBytes("--encr--");
+                //stream.Write(mark, 0, mark.Length);
                 stream.Write(data, 0, data.Length);
-                receiveMessage();
             }
         }
         public static void exchangeKeys()
